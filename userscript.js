@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bypass DevTools Detection (Enhanced)
 // @namespace    http://tampermonkey.net/
-// @author       set8
+// @author       set8 + AI Assistance
 // @version      1.7.1
 // @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites.
 // @match        *://*/*
@@ -24,7 +24,7 @@
     if (
         cfPathRe.test(location.pathname) ||
         cfCookieRe.test(document.cookie) ||
-        cfParamRe.test(location.search)          // ← new
+        cfParamRe.test(location.search)
     ) {
         return;
     }
