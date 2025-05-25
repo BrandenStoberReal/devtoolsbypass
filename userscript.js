@@ -2,15 +2,28 @@
 // @name         Bypass DevTools Detection (Enhanced)
 // @namespace    http://tampermonkey.net/
 // @author       set8
-// @version      1.4
+// @version      1.6
 // @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites (specifically cloudflare challenges).
 // @match        *://*/*
+// @exclude      *://*/*/cdn-cgi/challenge-platform/*
+// @exclude      *://*/*/cdn-cgi/l/*           ← new
+// @exclude      *://*/*/cdn-cgi/trace/*       ← optional, for other CF endpoints
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
 
 (function() {
     'use strict';
+
+    // If we’re on any CF‐challenge path or have a CF challenge cookie, do nothing.
+    const cfPathRe = /^\/cdn-cgi\/(l\/|challenge-platform\/|trace\/)/;
+    const cfCookieRe = /(__cf_chl_|cf_clearance=)/;
+    if (
+        cfPathRe.test(location.pathname) ||
+        cfCookieRe.test(document.cookie)
+    ) {
+        return;
+    }
 
     // 0) COMPLETELY disable the detector UMD for certain websites
     Object.defineProperty(window, 'devtoolsDetector', {
@@ -111,16 +124,19 @@
         Object.defineProperty(imgProto, 'id', { get: ()=> null, configurable: true });
     }
 
-    // 9) SPOOF NAVIGATION TYPE
+    // 9) SPOOF NAVIGATION TYPE – but preserve all other entry‐types
     try {
-        const nav = performance.getEntriesByType('navigation')[0];
+        const realGet = performance.getEntriesByType.bind(performance);
+        const nav = realGet('navigation')[0];
         if (nav && nav.type === 'reload') {
             Object.defineProperty(performance, 'getEntriesByType', {
-                value: ()=> [{ type: 'navigate' }],
+                value: (entryType) => entryType === 'navigation'
+                ? [{ type: 'navigate' }]
+                : realGet(entryType),
                 configurable: true
             });
         }
-    } catch {}
+    } catch (e) { /* ignore on really old browsers */ }
 
     // 10) HIDE FUNCTION SOURCE (toString)
     const realToString = Function.prototype.toString;
