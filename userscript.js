@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @author       set8
 // @version      1.4
-// @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites.
+// @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites (specifically cloudflare challenges).
 // @match        *://*/*
 // @grant        none
 // @run-at       document-start
