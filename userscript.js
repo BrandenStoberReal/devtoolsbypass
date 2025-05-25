@@ -6,7 +6,7 @@
 // @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites (specifically cloudflare challenges).
 // @match        *://*/*
 // @exclude      *://*/*/cdn-cgi/challenge-platform/*
-// @exclude      *://*/*/cdn-cgi/l/*           ← new
+// @exclude      *://*/*/cdn-cgi/l/*
 // @exclude      *://*/*/cdn-cgi/trace/*       ← optional, for other CF endpoints
 // @exclude      *://*/*?*__cf_chl_rt_tk=*      ← skip any URL with CF challenge token
 // @grant        none
