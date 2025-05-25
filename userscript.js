@@ -7,8 +7,8 @@
 // @match        *://*/*
 // @exclude      *://*/*/cdn-cgi/challenge-platform/*
 // @exclude      *://*/*/cdn-cgi/l/*
-// @exclude      *://*/*/cdn-cgi/trace/*       ← optional, for other CF endpoints
-// @exclude      *://*/*?*__cf_chl_rt_tk=*      ← skip any URL with CF challenge token
+// @exclude      *://*/*/cdn-cgi/trace/*
+// @exclude      *://*/*?*__cf_chl_rt_tk=*
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
