@@ -2,12 +2,13 @@
 // @name         Bypass DevTools Detection (Enhanced)
 // @namespace    http://tampermonkey.net/
 // @author       set8
-// @version      1.6
+// @version      1.7
 // @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites (specifically cloudflare challenges).
 // @match        *://*/*
 // @exclude      *://*/*/cdn-cgi/challenge-platform/*
 // @exclude      *://*/*/cdn-cgi/l/*           ← new
 // @exclude      *://*/*/cdn-cgi/trace/*       ← optional, for other CF endpoints
+// @exclude      *://*/*?*__cf_chl_rt_tk=*      ← skip any URL with CF challenge token
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
@@ -15,12 +16,15 @@
 (function() {
     'use strict';
 
-    // If we’re on any CF‐challenge path or have a CF challenge cookie, do nothing.
-    const cfPathRe = /^\/cdn-cgi\/(l\/|challenge-platform\/|trace\/)/;
+    // EARLY BAIL on *any* CF challenge path, cookie, or challenge-token param
+    const cfPathRe   = /^\/cdn-cgi\/(l\/|challenge-platform\/|trace\/)/;
     const cfCookieRe = /(__cf_chl_|cf_clearance=)/;
+    const cfParamRe  = /(^|[?&])__cf_chl_rt_tk=/;
+
     if (
         cfPathRe.test(location.pathname) ||
-        cfCookieRe.test(document.cookie)
+        cfCookieRe.test(document.cookie) ||
+        cfParamRe.test(location.search)          // ← new
     ) {
         return;
     }
