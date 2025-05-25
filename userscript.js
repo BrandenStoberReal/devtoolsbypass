@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Bypass DevTools Detection (Enhanced)
 // @namespace    http://tampermonkey.net/
+// @author       set8
 // @version      1.4
-// @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc.)
+// @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites.
 // @match        *://*/*
 // @grant        none
 // @run-at       document-start
