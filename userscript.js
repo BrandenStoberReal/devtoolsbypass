@@ -12,7 +12,7 @@
 (function() {
     'use strict';
 
-    // 0) COMPLETELY disable the detector UMD
+    // 0) COMPLETELY disable the detector UMD for certain websites
     Object.defineProperty(window, 'devtoolsDetector', {
         value: {
             launch:         () => {},
