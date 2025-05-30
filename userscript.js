@@ -2,13 +2,14 @@
 // @name         Bypass DevTools Detection (Enhanced)
 // @namespace    http://tampermonkey.net/
 // @author       set8 + AI Assistance
-// @version      1.7.1
+// @version      1.7.2
 // @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites.
 // @match        *://*/*
 // @exclude      *://*/*/cdn-cgi/challenge-platform/*
 // @exclude      *://*/*/cdn-cgi/l/*
 // @exclude      *://*/*/cdn-cgi/trace/*
 // @exclude      *://*/*?*__cf_chl_rt_tk=*
+// @exclude      *://*.hcaptcha.com/*
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
@@ -16,16 +17,24 @@
 (function() {
     'use strict';
 
-    // EARLY BAIL on *any* CF challenge path, cookie, or challenge-token param
-    const cfPathRe   = /^\/cdn-cgi\/(l\/|challenge-platform\/|trace\/)/;
-    const cfCookieRe = /(__cf_chl_|cf_clearance=)/;
+    /* ------------------------------------------------------------------
+       EARLY BAIL-OUTS ––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+    // 0a) Skip every hCaptcha domain (defence in depth – works even if
+    //     the @exclude line is edited out later or the script is injected
+    //     with GM.addElement etc.)
+    if (/\.hcaptcha\.com$/i.test(location.hostname)) {
+        return;
+    }
+
+    // 0b) Skip Cloudflare anti-bot pages just like before
+    const cfPathRe   = /^\/cdn-cgi\/(?:l\/|challenge-platform\/|trace\/)/;
+    const cfCookieRe = /(?:__cf_chl_|cf_clearance=)/;
     const cfParamRe  = /(^|[?&])__cf_chl_rt_tk=/;
 
-    if (
-        cfPathRe.test(location.pathname) ||
+    if (cfPathRe.test(location.pathname) ||
         cfCookieRe.test(document.cookie) ||
-        cfParamRe.test(location.search)
-    ) {
+        cfParamRe.test(location.search)) {
         return;
     }
 
