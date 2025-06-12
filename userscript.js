@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Bypass DevTools Detection (Enhanced)
 // @namespace    http://tampermonkey.net/
+// @updateURL    https://raw.githubusercontent.com/BrandenStoberReal/devtoolsbypass/refs/heads/main/userscript.js
 // @author       set8 + AI Assistance
-// @version      1.7.2
+// @version      1.7.3
 // @description  Enhanced DevTools-detection bypass (console, hooks, timing, visibility, eval, etc). Tends to break more advanced sites.
 // @match        *://*/*
 // @exclude      *://*/*/cdn-cgi/challenge-platform/*
